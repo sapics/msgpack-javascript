@@ -462,7 +462,7 @@ function msgpackupload(url,        // @param String:
     option.method = "PUT";
     option.binary = true;
 
-    if (option.worker && globalScope.Worker) {
+    if (option.worker && Worker) {
         var worker = new Worker(msgpack.worker);
 
         worker.onmessage = function(event) {
@@ -505,7 +505,7 @@ function ajax(url,        // @param String:
                     data = rv.ok ? xhr.responseText : "";
                 } else {
                     if (rv.ok) {
-                        if (option.worker && globalScope.Worker) {
+                        if (option.worker && Worker) {
                             worker = new Worker(msgpack.worker);
                             worker.onmessage = function(event) {
                                 callback(event.data, option, rv);
@@ -542,8 +542,8 @@ function ajax(url,        // @param String:
         abort && xhr && xhr.abort && xhr.abort();
         watchdog && (clearTimeout(watchdog), watchdog = 0);
         xhr = null;
-        globalScope.addEventListener &&
-            globalScope.removeEventListener("beforeunload", ng, false);
+        addEventListener &&
+            removeEventListener("beforeunload", ng, false);
     }
 
     var watchdog = 0,
@@ -552,8 +552,8 @@ function ajax(url,        // @param String:
         before = option.before,
         after = option.after,
         data = option.data || null,
-        xhr = globalScope.XMLHttpRequest ? new XMLHttpRequest() :
-              globalScope.ActiveXObject  ? new ActiveXObject("Microsoft.XMLHTTP") :
+        xhr = XMLHttpRequest ? new XMLHttpRequest() :
+              ActiveXObject  ? new ActiveXObject("Microsoft.XMLHTTP") :
               null,
         run = 0, i,
         overrideMimeType = "overrideMimeType",
@@ -576,8 +576,8 @@ function ajax(url,        // @param String:
             xhr[setRequestHeader](i, header[i]);
         }
 
-        globalScope.addEventListener &&
-            globalScope.addEventListener("beforeunload", ng, false); // 400: Bad Request
+        addEventListener &&
+            addEventListener("beforeunload", ng, false); // 400: Bad Request
 
         xhr.send(data);
         watchdog = setTimeout(function() {
@@ -657,7 +657,7 @@ function base64encode(data) { // @param ByteArray:
         num2bin = _num2bin,
         num2b64 = _num2b64;
 
-    if (globalScope.btoa) {
+    if (btoa) {
         while (i < iz) {
             rv.push(num2bin[data[++i]]);
         }
